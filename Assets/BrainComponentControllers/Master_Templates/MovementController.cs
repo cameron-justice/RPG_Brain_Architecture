@@ -31,6 +31,24 @@ public class MovementController : BrainComponentController {
 		tr = GetComponent<Transform>();
 	}
 
+	protected virtual void Update()
+	{
+		// Lock rotation so player is alwas upright
+		if(tr.rotation.x != 0 || tr.rotation.z != 0)
+			tr.rotation = new Quaternion(0, tr.rotation.y, 0, Quaternion.identity.w);
+
+		// Apply jump falloff
+		if(rb.velocity.y < 0)
+		{
+			rb.velocity += Vector3.up * Physics.gravity.y * (fallMultiplier - 1) * Time.deltaTime;
+		}
+
+		if(rb.velocity.y < -maxFallVelocity)
+		{
+			rb.velocity = new Vector3(rb.velocity.x, -maxFallVelocity, rb.velocity.z);
+		}
+	}
+
 	public virtual void Jump(){}
 	public virtual void Dash(){}
 

@@ -14,7 +14,7 @@ public class MoveCommand : Command {
 
     public override void Execute()
     {
-        actor.transform.Translate(moveVector * Time.deltaTime);
+        actor.GetComponent<Rigidbody>().MovePosition(actor.transform.position + moveVector * Time.deltaTime);
     }
 
 }
